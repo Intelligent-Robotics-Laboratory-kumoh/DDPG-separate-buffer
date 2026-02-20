@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!--Gazebo Differential Drive Plugin-->
+<gazebo>
+  <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+    <updateRate>100.0</updateRate>
+    <robotNamespace>/</robotNamespace>
+    <leftFrontJoint>front_L_motor_rev_joint</leftFrontJoint>
+    <rightFrontJoint>front_R_motor_rev_joint</rightFrontJoint>
+    <leftRearJoint>rear_L_motor_rev_joint</leftRearJoint>
+    <rightRearJoint>rear_R_motor_rev_joint</rightRearJoint>
+    <wheelSeparation>0.4</wheelSeparation>
+    <wheelDiameter>0.215</wheelDiameter>
+    <robotBaseFrame>base_link</robotBaseFrame>
+    <torque>20</torque>
+    <topicName>twist2gazebo</topicName>
+    <broadcastTF>false</broadcastTF>
+  </plugin>
+
+<!--Leveling_Platform control-->
+
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/robot_description</robotNamespace>
+    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+  </plugin>
+</gazebo>
+
+<transmission name="trans1">
+   <type>transmission_interface/SimpleTransmission</type>
+   <joint name="front_motor_rev_joint">
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </joint>
+   <actuator name="front_motor_rev_motor">
+     <mechanicalReduction>50</mechanicalReduction>
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </actuator>
+</transmission>
+
+<transmission name="trans2">
+   <type>transmission_interface/SimpleTransmission</type>
+   <joint name="upper_motor_rev_joint">
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </joint>
+   <actuator name="upper_motor_rev_motor">
+     <mechanicalReduction>50</mechanicalReduction>
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </actuator>
+</transmission>
+
+</robot>

@@ -1,0 +1,1829 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot name="Mobile_Leveling_Platform_V2" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<!--xacro:include filename="$(find Mobile_Leveling_Platform_V2)/urdf/Mobile_Leveling_Platform_V2.gazebo.xacro" /-->
+
+<!--Mobile_Robot control-->
+  <gazebo>
+    <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>100</updateRate>
+      <robotNamespace>/platform</robotNamespace>
+      <leftFrontJoint>front_L_motor_rev_joint</leftFrontJoint>
+      <rightFrontJoint>front_R_motor_rev_joint</rightFrontJoint>
+      <leftRearJoint>rear_L_motor_rev_joint</leftRearJoint>
+      <rightRearJoint>rear_R_motor_rev_joint</rightRearJoint>
+      <wheelSeparation>0.67</wheelSeparation>
+      <wheelDiameter>0.264453</wheelDiameter>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <torque>100</torque>
+      <commandTopic>twist2gazebo</commandTopic>
+      <broadcastTF>false</broadcastTF>
+    </plugin>
+  </gazebo>
+
+<!--Leveling_Platform control-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>platform/MLP</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+  <transmission name="trans1">
+     <type>transmission_interface/SimpleTransmission</type>
+     <joint name="front_motor_rev_joint">
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </joint>
+     <actuator name="front_motor_rev_motor">
+       <mechanicalReduction>50</mechanicalReduction>
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </actuator>
+  </transmission>
+
+  <transmission name="trans2">
+     <type>transmission_interface/SimpleTransmission</type>
+     <joint name="upper_motor_rev_joint">
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </joint>
+     <actuator name="upper_motor_rev_motor">
+       <mechanicalReduction>50</mechanicalReduction>
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </actuator>
+  </transmission>
+
+<!--IMU Plugin-->
+  <gazebo reference="imu_link_upper">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_upper</topicName>
+        <bodyName>imu_link_upper</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link_upper</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="imu_link_base">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_base</topicName>
+        <bodyName>imu_link_base</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link_base</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="upper_link">
+    <sensor name="bumper_upper" type="contact">
+        <selfCollide>false</selfCollide>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10.0</updateRate>
+        <contact>
+            <collision>upper_motor_rev_link_fixed_joint_lump__upper_link_collision_collision_1</collision><!--Mobile_Leveling_Platform_V2::upper_motor_rev_link::-->
+        </contact>
+        <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller" >
+            <bumperTopicName>upper_contact</bumperTopicName>
+            <frameName>world</frameName>
+        </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="marker">
+    <sensor name="bumper_marker" type="contact">
+        <selfCollide>false</selfCollide>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10.0</updateRate>
+        <contact>
+            <collision>upper_motor_rev_link_fixed_joint_lump__marker_collision_4</collision><!--Mobile_Leveling_Platform_V2::upper_motor_rev_link::-->
+        </contact>
+        <plugin filename="libgazebo_ros_bumper.so" name="gazebo_ros_bumper_controller" >
+            <bumperTopicName>mark_contact</bumperTopicName>
+            <frameName>world</frameName>
+        </plugin>
+    </sensor>
+  </gazebo>
+
+<!-- GPS -->
+  <gazebo>
+    <plugin name="GazeboRosGps" filename="libhector_gazebo_ros_gps.so">
+        <updateRate>100</updateRate>
+        <robotNamespace>platform/MLP</robotNamespace>
+        <bodyName>GPS_link</bodyName>
+        <frameId>default_empty</frameId>
+        <topicName>fix</topicName>
+	<velocityTopicName>fix_velocity</velocityTopicName>
+	<referenceLatitude>36.146581</referenceLatitude> <!--36.146581-->
+	<referenceLongitude>128.388039</referenceLongitude> <!--128.388039-->
+	<referenceHeading>90</referenceHeading>
+	<referenceAltitude>0</referenceAltitude>
+    	<status>STATIS_FIX</status>
+	<service>SERVICE_GPS	</service>
+	<offset>0 0 0 0 0 0</offset>
+	<drift>0</drift>
+	<driftFrequency>100</driftFrequency>
+	<gaussianNoise>0</gaussianNoise>
+	<velocityOffset>0</velocityOffset>
+	<velocityDrift>0</velocityDrift>
+	<velocityDriftFrequency>100</velocityDriftFrequency>
+	<velocityGaussianNoise>0</velocityGaussianNoise>
+    </plugin>
+  </gazebo>
+
+<!--link color-->
+
+  <gazebo reference="GPS_link">
+      <material>Gazebo/Black</material> 
+  </gazebo>
+
+  <gazebo reference="marker_center">
+      <material>ArucoVisualMarker0/Marker</material> 
+  </gazebo>
+
+  <gazebo reference="marker_leftup">
+      <material>ArucoVisualMarker1/Marker</material> 
+  </gazebo>
+
+    <gazebo reference="marker_rightup">
+      <material>ArucoVisualMarker2/Marker</material> 
+  </gazebo>
+
+  <gazebo reference="marker_leftdown">
+      <material>ArucoVisualMarker3/Marker</material> 
+  </gazebo>
+
+  <gazebo reference="marker_rightdown">
+      <material>ArucoVisualMarker4/Marker</material> 
+  </gazebo>
+  
+<!--link & joint-->
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="15.686" />
+      <inertia
+        ixx="3.1779"
+        ixy="0"
+        ixz="0"
+        iyy="3.6754"
+        iyz="0"
+        izz="4.4975" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 1.5 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size="0.64 0.998 0.222"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="imu_base_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0.111"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="imu_link_base" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link name ="imu_link_base">
+    <inertial>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="front_L_motor_rev_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.075717" />
+      <inertia
+        ixx="3.7606E-05"
+        ixy="1.0136E-07"
+        ixz="-5.7378E-07"
+        iyy="3.7419E-05"
+        iyz="-1.7765E-07"
+        izz="3.9868E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_L_motor_rev_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_L_motor_rev_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_L_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="0.363 -0.3709 -0.041791"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_L_motor_rev_link" />
+    <axis
+      xyz="0 0 -1" />
+    <dynamics 
+      damping="0.7" 
+      friction="0.0"/>
+  </joint>
+  <link
+    name="front_L_tire_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_L_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_L_tire_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_L_tire_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.011"
+      rpy="0.13209 1.5708 0" />
+    <parent
+      link="front_L_motor_rev_link" />
+    <child
+      link="front_L_tire_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="front_R_motor_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.075717" />
+      <inertia
+        ixx="3.7606E-05"
+        ixy="1.0136E-07"
+        ixz="-5.7378E-07"
+        iyy="3.7419E-05"
+        iyz="-1.7765E-07"
+        izz="3.9868E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_R_motor_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_R_motor_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_R_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="-0.363 -0.3709 -0.041791"
+      rpy="3.1416 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_R_motor_link" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics 
+      damping="0.7" 
+      friction="0.8"/>
+  </joint>
+  <link
+    name="front_R_tire_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_R_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_R_tire_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_R_tire_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.011"
+      rpy="0.14726 1.5708 0" />
+    <parent
+      link="front_R_motor_link" />
+    <child
+      link="front_R_tire_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_L_motor_rev_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.075717" />
+      <inertia
+        ixx="3.7606E-05"
+        ixy="1.0136E-07"
+        ixz="-5.7378E-07"
+        iyy="3.7419E-05"
+        iyz="-1.7765E-07"
+        izz="3.9868E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_L_motor_rev_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_L_motor_rev_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_L_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="0.363 0.3731 -0.041791"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_L_motor_rev_link" />
+    <axis
+      xyz="0 0 -1" />
+    <dynamics 
+      damping="0.7" 
+      friction="0.8"/>
+  </joint>
+  <link
+    name="rear_L_tire_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_L_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_L_tire_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_L_tire_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.011"
+      rpy="0.13537 -1.5708 0" />
+    <parent
+      link="rear_L_motor_rev_link" />
+    <child
+      link="rear_L_tire_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_R_motor_rev_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.075717" />
+      <inertia
+        ixx="3.7606E-05"
+        ixy="1.0136E-07"
+        ixz="-5.7378E-07"
+        iyy="3.7419E-05"
+        iyz="-1.7765E-07"
+        izz="3.9868E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_R_motor_rev_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_R_motor_rev_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_R_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="-0.363 0.3731 -0.041791"
+      rpy="3.1416 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_R_motor_rev_link" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics 
+      damping="0.7" 
+      friction="0.8"/>
+  </joint>
+  <link
+    name="rear_R_tire_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_R_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_R_tire_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_R_tire_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.011"
+      rpy="0.1395 1.5708 0" />
+    <parent
+      link="rear_R_motor_rev_link" />
+    <child
+      link="rear_R_tire_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="mating_link">
+    <inertial>
+      <origin
+        xyz="0.28001 -0.915 -0.041642"
+        rpy="0 0 0" />
+      <mass
+        value="15" /> <!--mating_link_ mass:14.754-->
+      <inertia
+        ixx="4.107625"
+        ixy="0"
+        ixz="0"
+        iyy="0.5245"
+        iyz="0"
+        izz="4.607125" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/mating_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.28001 -0.915 -0.041642" 
+        rpy="0 0 0" />
+      <geometry>
+	<box size="0.64 1.810 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="mating_joint"
+    type="fixed">
+    <origin
+      xyz="-0.28 0.88511 0.20249"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="mating_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="front_leveling_link">
+    <inertial>
+      <origin
+        xyz="-0.094 -0.0078388 0.49881"
+        rpy="0 0 0" />
+      <mass
+        value="1.9876" />
+      <inertia
+        ixx="0.025468"
+        ixy="0"
+        ixz="0"
+        iyy="0.024479"
+        iyz="0"
+        izz="0.0026287" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_leveling_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="-0.1 -0.03 0.355"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.218 0.153 0.697"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_leveling_joint"
+    type="fixed">
+    <origin
+      xyz="0.374 -1.768 0.015"
+      rpy="0 0 0" />
+    <parent
+      link="mating_link" />
+    <child
+      link="front_leveling_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="front_motor_rev_link">
+    <inertial>
+      <origin
+        xyz="9.7145E-16 0.030907 2.2204E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.025329" /> 
+      <inertia
+        ixx="6.8991E-06"
+        ixy="-2.7437E-22"
+        ixz="3.1069E-40"
+        iyy="1.0461E-05"
+        iyz="1.7456E-23"
+        izz="6.8991E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_motor_rev_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_motor_rev_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="GPS_joint"
+    type="fixed">
+    <origin
+      xyz="9.7145E-16 0.030907 0.0095"
+      rpy="0 3.141592 0" />
+    <parent
+      link="front_motor_rev_link" />
+    <child
+      link="GPS_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link 
+    name="GPS_link">
+    <inertial>
+      <origin
+        xyz="9.7145E-16 0.030907 0.015" 
+        rpy="0 3.141592 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="9.7145E-16 0.030907 0.015"
+        rpy="0 3.141592 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="9.7145E-16 0.030907 0.015"
+        rpy="0 3.141592 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_motor_rev_joint"
+    type="revolute">
+    <origin
+      xyz="-0.094 0.055 0.67"
+      rpy="3.1416 0 -3.1416" />
+    <parent
+      link="front_leveling_link" />
+    <child
+      link="front_motor_rev_link" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.5236"
+      upper="0.5236"
+      effort="10"
+      velocity="10" />
+    <dynamics 
+      damping="0.7" 
+      friction="0.8"/>
+  </joint>
+
+  <link
+    name="under_upper_link">
+    <inertial>
+      <origin
+        xyz="0.0862 0.80081 -0.32342"
+        rpy="0.017453289 0 0" />
+      <mass
+        value="8.5158" />
+      <inertia
+        ixx="1.146358675"
+        ixy="0"
+        ixz="0"
+        iyy="1.146358675"
+        iyz="0"
+        izz="1.930760367" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/under_upper_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.0862 0.80081 -0.32342"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="1.166345146172 1.166345146172 0.505" /> <!--0.505-->
+      </geometry>
+    </collision>
+  </link>
+
+
+
+  <joint
+    name="under_upper_joint"
+    type="fixed">
+    <origin
+      xyz="0.087597 0.053 0.015743"
+      rpy="-3.1416 0 -3.1416" />
+    <parent
+      link="front_motor_rev_link" />
+    <child
+      link="under_upper_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="upper_motor_rev_link">
+    <inertial>
+      <origin
+        xyz="-2.2204E-16 0.030907 1.1102E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.025329" />
+      <inertia
+        ixx="6.8991E-06"
+        ixy="5.9833E-22"
+        ixz="-5.5917E-22"
+        iyy="1.0461E-05"
+        iyz="1.757E-23"
+        izz="6.8991E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/upper_motor_rev_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/upper_motor_rev_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="upper_motor_rev_joint"
+    type="revolute">
+    <origin
+      xyz="0.877 0.79375 0"
+      rpy="0 -0.0058456 1.5708" />
+    <parent
+      link="under_upper_link" />
+    <child
+      link="upper_motor_rev_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-0.5236"
+      upper="0.5236"
+      effort="10"
+      velocity="10" />
+    <dynamics 
+      damping="0.7" 
+      friction="0.8"/>
+  </joint>
+  <link
+    name="upper_link">
+    <inertial>
+      <origin
+        xyz="-0.00040832 -0.00031982 -0.0067744"
+        rpy="0 0 0" />
+      <mass
+        value="12.075" />
+      <inertia
+        ixx="2.264968125"
+        ixy="0"
+        ixz="0"
+        iyy="2.264968125"
+        iyz="0"
+        izz="4.528125" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/upper.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision name="upper_link_collision">
+      <origin
+        xyz="-0.00040832 -0.00031982 -0.0067744"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="1.5 1.5 0.03" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name ="marker_center">
+    <inertial>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.3556 0.3556 0.005"/><!--0.3556 0.3556 0.005-->
+      </geometry>
+        <material name = "ArucoVisualMarker7/Marker" >
+          <script>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_0/materials/scripts</uri>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_0/materials/textures</uri>
+          </script>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.3556 0.3556 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <link name ="marker_pad_center">
+    <inertial>
+      <origin
+        xyz="0 0 -1e-5" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.3556 0.3556 1e-5"/>
+      </geometry>
+        <material name ="Gazebo/green">
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.3556 0.3556 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <joint name="marker_markerpad_joint" type="fixed">
+     <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+     <parent
+        link="marker_pad_center" />
+     <child
+        link="marker_center" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+  <joint name="marker_upper_joint" type="fixed">
+     <origin
+        xyz="0 0 0.021"
+        rpy="0 0 0" />
+     <parent
+        link="upper_link" />
+     <child
+        link="marker_pad_center" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+    <static>1</static>
+    <allow_auto_disable>1</allow_auto_disable>
+
+<!--other markers-->
+  <link name ="marker_leftup">
+    <inertial>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 0.005"/><!--0.3556 0.3556 0.005-->
+      </geometry>
+        <material name = "ArucoVisualMarker1/Marker" >
+          <script>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_1/materials/scripts</uri>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_1/materials/textures</uri>
+          </script>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <link name ="marker_pad_leftup">
+    <inertial>
+      <origin
+        xyz="0 0 -1e-5" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 1e-5"/>
+      </geometry>
+        <material name ="Gazebo/green">
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <joint name="marker_markerpad_leftup_joint" type="fixed">
+     <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+     <parent
+        link="marker_pad_leftup" />
+     <child
+        link="marker_leftup" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+  <joint name="marker_upper_leftup_joint" type="fixed">
+     <origin
+        xyz="-0.6125 0.6125 0.021"
+        rpy="0 0 0" />
+     <parent
+        link="upper_link" />
+     <child
+        link="marker_pad_leftup" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+    <link name ="marker_rightup">
+    <inertial>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 0.005"/><!--0.3556 0.3556 0.005-->
+      </geometry>
+        <material name = "ArucoVisualMarker2/Marker" >
+          <script>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_2/materials/scripts</uri>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_2/materials/textures</uri>
+          </script>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <link name ="marker_pad_rightup">
+    <inertial>
+      <origin
+        xyz="0 0 -1e-5" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 1e-5"/>
+      </geometry>
+        <material name ="Gazebo/green">
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <joint name="marker_markerpad_rightup_joint" type="fixed">
+     <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+     <parent
+        link="marker_pad_rightup" />
+     <child
+        link="marker_rightup" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+  <joint name="marker_upper_rightup_joint" type="fixed">
+     <origin
+        xyz="0.6125 0.6125 0.021"
+        rpy="0 0 0" />
+     <parent
+        link="upper_link" />
+     <child
+        link="marker_pad_rightup" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+    <link name ="marker_leftdown">
+    <inertial>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 0.005"/><!--0.3556 0.3556 0.005-->
+      </geometry>
+        <material name = "ArucoVisualMarker3/Marker" >
+          <script>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_3/materials/scripts</uri>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_3/materials/textures</uri>
+          </script>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <link name ="marker_pad_leftdown">
+    <inertial>
+      <origin
+        xyz="0 0 -1e-5" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 1e-5"/>
+      </geometry>
+        <material name ="Gazebo/green">
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <joint name="marker_markerpad_leftdown_joint" type="fixed">
+     <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+     <parent
+        link="marker_pad_leftdown" />
+     <child
+        link="marker_leftdown" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+  <joint name="marker_upper_leftdown_joint" type="fixed">
+     <origin
+        xyz="-0.6125 -0.6125 0.021"
+        rpy="0 0 0" />
+     <parent
+        link="upper_link" />
+     <child
+        link="marker_pad_leftdown" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+    <link name ="marker_rightdown">
+    <inertial>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 0.005"/><!--0.3556 0.3556 0.005-->
+      </geometry>
+        <material name = "ArucoVisualMarker4/Marker" >
+          <script>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_4/materials/scripts</uri>
+            <uri>~/rl_ws/Mobile_Leveling_Platform_V2/urdf/aruco_markers/aruco_visual_marker_4/materials/textures</uri>
+          </script>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <link name ="marker_pad_rightdown">
+    <inertial>
+      <origin
+        xyz="0 0 -1e-5" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.25 0.25 1e-5"/>
+      </geometry>
+        <material name ="Gazebo/green">
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.25 0.25 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <joint name="marker_markerpad_rightdown_joint" type="fixed">
+     <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+     <parent
+        link="marker_pad_rightdown" />
+     <child
+        link="marker_rightdown" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+  <joint name="marker_upper_rightdown_joint" type="fixed">
+     <origin
+        xyz="0.6125 -0.6125 0.021"
+        rpy="0 0 0" />
+     <parent
+        link="upper_link" />
+     <child
+        link="marker_pad_rightdown" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+
+  <joint
+    name="upper_joint"
+    type="fixed">
+    <origin
+      xyz="0.0038376 0.788 0.014978"
+      rpy="-0.0058456 0 -1.5708" />
+    <parent
+      link="upper_motor_rev_link" />
+    <child
+      link="upper_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link name ="imu_link_upper">
+    <inertial>
+      <origin
+        xyz="-0.00040832 -0.00031982 -0.01"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="-0.00040832 -0.00031982 -0.01"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="255 255 255" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="-0.00040832 -0.00031982 -0.01"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>  
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="imu_joint"
+    type="fixed">
+    <origin
+      xyz="-0.00040832 -0.00031982 -0.015"
+      rpy="0 0 0" />
+    <parent
+      link="upper_link" />
+    <child
+      link="imu_link_upper" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_Leveling_link">
+    <inertial>
+      <origin
+        xyz="0.03175 -0.0029488 0.36"
+        rpy="0 0 0" />
+      <mass
+        value="2.75" />
+      <inertia
+        ixx="0.025468"
+        ixy="0"
+        ixz="0"
+        iyy="0.024479"
+        iyz="0"
+        izz="0.0026287" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_Leveling_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.03175 -0.0029488 0.36"
+        rpy="0 0 0" />
+      <geometry>
+	<box size="0.1535 0.080 0.697"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_Leveling_joint"
+    type="fixed">
+    <origin
+      xyz="0.24825 0 0.015"
+      rpy="0 0 0" />
+    <parent
+      link="mating_link" />
+    <child
+      link="rear_Leveling_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+
+</robot>

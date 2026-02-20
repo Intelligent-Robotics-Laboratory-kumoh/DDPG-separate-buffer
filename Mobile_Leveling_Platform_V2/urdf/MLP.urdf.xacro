@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot name="Mobile_Leveling_Platform_V2" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="30" />
+      <inertia
+        ixx="3.1779"
+        ixy="0"
+        ixz="0"
+        iyy="3.6754"
+        iyz="0"
+        izz="4.4975" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/base_link_box.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/base_link_box.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="mating_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="15" />
+      <inertia
+        ixx="1.395284708"
+        ixy="0"
+        ixz="0"
+        iyy="2.07140337"
+        iyz="0"
+        izz="2.676119029" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/mating_link_box.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/mating_link_box.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="mating_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="mating_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+</robot>

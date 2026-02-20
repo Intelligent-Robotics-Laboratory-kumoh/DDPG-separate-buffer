@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="Mobile_Leveling_Platform_V2">
+
+  <gazebo reference="base_link">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_base</topicName>
+        <bodyName>base_link</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>`
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>base_link</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="upper">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_upper</topicName>
+        <bodyName>upper</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>`
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>upper</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="155.16" />
+      <inertia
+        ixx="15.264"
+        ixy="8.1869E-16"
+        ixz="1.0947E-16"
+        iyy="5.2055"
+        iyz="3.5634E-16"
+        izz="18.447" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="front_L_tire">
+    <inertial>
+      <origin
+        xyz="0 5.5511E-17 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.7956" />
+      <inertia
+        ixx="0.024947"
+        ixy="8.735E-20"
+        ixz="-1.025E-35"
+        iyy="0.013056"
+        iyz="-2.9066E-35"
+        izz="0.013056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_L_tire.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_L_tire.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_L_tire_joint"
+    type="continuous">
+    <origin
+      xyz="-0.315 -0.05 0.3655"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_L_tire" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="front_R_tire">
+    <inertial>
+      <origin
+        xyz="0 5.5511E-17 6.9389E-18"
+        rpy="0 0 0" />
+      <mass
+        value="2.7956" />
+      <inertia
+        ixx="0.024947"
+        ixy="8.735E-20"
+        ixz="-1.025E-35"
+        iyy="0.013056"
+        iyz="-2.9066E-35"
+        izz="0.013056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_R_tire.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_R_tire.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_R_tire_joint"
+    type="continuous">
+    <origin
+      xyz="0.315 -0.05 0.3655"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_R_tire" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="rear_L_tire">
+    <inertial>
+      <origin
+        xyz="0 -5.5511E-17 6.9389E-18"
+        rpy="0 0 0" />
+      <mass
+        value="2.7956" />
+      <inertia
+        ixx="0.024947"
+        ixy="8.735E-20"
+        ixz="-1.1326E-35"
+        iyy="0.013056"
+        iyz="-2.7872E-35"
+        izz="0.013056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_L_tire.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_L_tire.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_L_tire_joint"
+    type="fixed">
+    <origin
+      xyz="-0.315 -0.05 -0.3655"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_L_tire" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_R_tire">
+    <inertial>
+      <origin
+        xyz="0 -5.5511E-17 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.7956" />
+      <inertia
+        ixx="0.024947"
+        ixy="8.735E-20"
+        ixz="-1.025E-35"
+        iyy="0.013056"
+        iyz="-2.9066E-35"
+        izz="0.013056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_R_tire.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_R_tire.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_R_tire_joint"
+    type="fixed">
+    <origin
+      xyz="0.315 -0.05 -0.3655"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_R_tire" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="front_link">
+    <inertial>
+      <origin
+        xyz="2.1233E-17 0 0.015646"
+        rpy="0 0 0" />
+      <mass
+        value="1.7553" />
+      <inertia
+        ixx="0.073665"
+        ixy="6.2229E-21"
+        ixz="4.4114E-18"
+        iyy="0.086715"
+        iyz="-2.2576E-19"
+        izz="0.013313" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="front_joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.623 0.884"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link
+    name="front_rev_link">
+    <inertial>
+      <origin
+        xyz="7.9907E-20 0 -1.1102E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.065777" />
+      <inertia
+        ixx="0.00010099"
+        ixy="-1.4188E-21"
+        ixz="-7.6468E-54"
+        iyy="5.1388E-06"
+        iyz="0"
+        izz="0.00010099" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_rev_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/front_rev_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_rev_joint"
+    type="revolute">
+    <origin
+      xyz="0 -0.052 0.303"
+      rpy="0 0 0" />
+    <parent
+      link="front_link" />
+    <child
+      link="front_rev_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-0.5236"
+      upper="0.5236"
+      effort="1"
+      velocity="1" />
+  </joint>
+  <link
+    name="under_upper">
+    <inertial>
+      <origin
+        xyz="-3.1578E-16 0.78 -0.23865"
+        rpy="0 0 0" />
+      <mass
+        value="65.283" />
+      <inertia
+        ixx="6.3999"
+        ixy="-4.1894E-16"
+        ixz="-1.8877E-17"
+        iyy="7.261"
+        iyz="-2.6075E-17"
+        izz="13.487" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/under_upper.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/under_upper.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="under_upper_joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.052 -0.094958"
+      rpy="0 0 3.1416" />
+    <parent
+      link="front_rev_link" />
+    <child
+      link="under_upper" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="under_upper_R_link">
+    <inertial>
+      <origin
+        xyz="1.1102E-16 1.0033E-15 0.0063756"
+        rpy="0 0 0" />
+      <mass
+        value="1.3533" />
+      <inertia
+        ixx="0.044101"
+        ixy="-8.5828E-21"
+        ixz="4.1875E-20"
+        iyy="0.031883"
+        iyz="1.0583E-18"
+        izz="0.012421" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/under_upper_R_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/under_upper_R_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="under_upper_R_joint"
+    type="fixed">
+    <origin
+      xyz="-0.824 0.78 0"
+      rpy="0 0 -3.1416" />
+    <parent
+      link="under_upper" />
+    <child
+      link="under_upper_R_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="upper_rev_link">
+    <inertial>
+      <origin
+        xyz="-1.1102E-16 -7.9907E-20 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.058414" />
+      <inertia
+        ixx="4.5636E-06"
+        ixy="1.26E-21"
+        ixz="0"
+        iyy="7.1215E-05"
+        iyz="0"
+        izz="7.1215E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/upper_rev_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/upper_rev_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="upper_rev_joint"
+    type="revolute">
+    <origin
+      xyz="-0.0445 0 0.2025"
+      rpy="0 0 0" />
+    <parent
+      link="under_upper_R_link" />
+    <child
+      link="upper_rev_link" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="-0.5236"
+      upper="0.5236"
+      effort="1"
+      velocity="1" />
+  </joint>
+  <link
+    name="upper">
+    <inertial>
+      <origin
+        xyz="1.6976E-14 3.5696E-18 0.0093817"
+        rpy="0 0 0" />
+      <mass
+        value="30.967" />
+      <inertia
+        ixx="5.832"
+        ixy="-5.421E-16"
+        ixz="2.9827E-17"
+        iyy="6.1258"
+        iyz="-8.6368E-18"
+        izz="11.951" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/upper.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/upper.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="upper_joint"
+    type="fixed">
+    <origin
+      xyz="-0.7795 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="upper_rev_link" />
+    <child
+      link="upper" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="under_upper_L_link">
+    <inertial>
+      <origin
+        xyz="0 4.1266E-18 0.0063756"
+        rpy="0 0 0" />
+      <mass
+        value="1.3533" />
+      <inertia
+        ixx="0.044101"
+        ixy="-8.5828E-21"
+        ixz="4.1875E-20"
+        iyy="0.031883"
+        iyz="1.0981E-18"
+        izz="0.012421" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/under_upper_L_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/under_upper_L_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="under_upper_L_joint"
+    type="fixed">
+    <origin
+      xyz="0.824 0.78 0"
+      rpy="0 0 -3.1416" />
+    <parent
+      link="under_upper" />
+    <child
+      link="under_upper_L_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="upper_fixed_link">
+    <inertial>
+      <origin
+        xyz="0 -7.9907E-20 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.058414" />
+      <inertia
+        ixx="4.5636E-06"
+        ixy="1.26E-21"
+        ixz="0"
+        iyy="7.1215E-05"
+        iyz="0"
+        izz="7.1215E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/upper_fixed_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/upper_fixed_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="upper_fixed_joint"
+    type="fixed">
+    <origin
+      xyz="0.0445 0 0.2025"
+      rpy="0 0 0" />
+    <parent
+      link="under_upper_L_link" />
+    <child
+      link="upper_fixed_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_link">
+    <inertial>
+      <origin
+        xyz="1.6065E-17 0 0.015646"
+        rpy="0 0 0" />
+      <mass
+        value="1.7553" />
+      <inertia
+        ixx="0.073665"
+        ixy="6.2229E-21"
+        ixz="4.4204E-18"
+        iyy="0.086715"
+        iyz="-2.2576E-19"
+        izz="0.013313" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.623 -0.884"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_fixed_link">
+    <inertial>
+      <origin
+        xyz="7.9907E-20 0 -1.1102E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.065777" />
+      <inertia
+        ixx="0.00010099"
+        ixy="-1.4188E-21"
+        ixz="-7.6468E-54"
+        iyy="5.1388E-06"
+        iyz="0"
+        izz="0.00010099" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_fixed_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes2/rear_fixed_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_fixed_joint"
+    type="fixed">
+    <origin
+      xyz="0 0.052 0.303"
+      rpy="0 0 0" />
+    <parent
+      link="rear_link" />
+    <child
+      link="rear_fixed_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+</robot>

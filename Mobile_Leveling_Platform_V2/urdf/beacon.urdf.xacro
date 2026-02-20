@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="irlock_beacon" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <link name="irlock_beacon__link">
+    <inertial>
+      <mass value="10.0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+    <collision name="irlock_beacon__collision">
+      <origin rpy="0  0  0" xyz="0.00040832 -0.00031982 0.004"/>
+      <geometry>
+        <box size="0.1 0.1 0.01"/>
+      </geometry>
+    </collision>
+    <visual name="irlock_beacon__visual">
+      <origin rpy="0  0  0" xyz="0.00040832 -0.00031982 0.004"/>
+      <geometry>
+        <box size="0.1 0.1 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>
+
+<!---0.00040832 -0.00031982 0.004
+
+0.5   1.5   0.06-->

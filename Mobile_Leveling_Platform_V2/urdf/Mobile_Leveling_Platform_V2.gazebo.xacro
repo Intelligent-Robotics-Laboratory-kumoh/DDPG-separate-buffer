@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<robot>
+
+<gazebo>
+  <kp>1000000.0</kp>
+  <kd>1.0</kd>
+  <mu1>0.8</mu1>
+  <mu2>0.8</mu2>
+  <maxVel>0.0</maxVel>
+  <minDepth>0.001</minDepth>
+</gazebo>
+<!--
+<gazebo reference="base_link">
+  <kp>1000000.0</kp>
+  <kd>1.0</kd>
+  <mu1>0.8</mu1>
+  <mu2>0.8</mu2>
+  <maxVel>0.0</maxVel>
+  <minDepth>0.001</minDepth>
+</gazebo>
+
+	<gazebo reference="front_L_motor_rev_link">
+	  <kp>1000000.0</kp>
+	  <kd>1.0</kd>
+	  <mu1>0.8</mu1>
+	  <mu2>0.8</mu2>
+	  <maxVel>0.0</maxVel>
+	  <minDepth>0.001</minDepth>
+	</gazebo>
+
+		<gazebo reference="front_L_tire_link">
+		  <kp>1000000.0</kp>
+		  <kd>1.0</kd>
+		  <mu1>0.8</mu1>
+		  <mu2>0.8</mu2>
+		  <maxVel>0.0</maxVel>
+		  <minDepth>0.001</minDepth>
+		</gazebo>
+
+
+	<gazebo reference="front_R_motor_rev_link">
+	  <kp>1000000.0</kp>
+	  <kd>1.0</kd>
+	  <mu1>0.8</mu1>
+	  <mu2>0.8</mu2>
+	  <maxVel>0.0</maxVel>
+	  <minDepth>0.001</minDepth>
+	</gazebo>
+
+		<gazebo reference="front_R_tire_link">
+		  <kp>1000000.0</kp>
+		  <kd>1.0</kd>
+		  <mu1>0.8</mu1>
+		  <mu2>0.8</mu2>
+		  <maxVel>0.0</maxVel>
+		  <minDepth>0.001</minDepth>
+		</gazebo>
+
+	<gazebo reference="rear_L_motor_rev_link">
+	  <kp>1000000.0</kp>
+	  <kd>1.0</kd>
+	  <mu1>0.8</mu1>
+	  <mu2>0.8</mu2>
+	  <maxVel>0.0</maxVel>
+	  <minDepth>0.001</minDepth>
+	</gazebo>
+
+		<gazebo reference="rear_L_tire_link">
+		  <kp>1000000.0</kp>
+		  <kd>1.0</kd>
+		  <mu1>0.8</mu1>
+		  <mu2>0.8</mu2>
+		  <maxVel>0.0</maxVel>
+		  <minDepth>0.001</minDepth>
+		</gazebo>
+
+	<gazebo reference="rear_R_motor_rev_link">
+	  <kp>1000000.0</kp>
+	  <kd>1.0</kd>
+	  <mu1>0.8</mu1>
+	  <mu2>0.8</mu2>
+	  <maxVel>0.0</maxVel>
+	  <minDepth>0.001</minDepth>
+	</gazebo>
+
+		<gazebo reference="rear_R_tire_link">
+		  <kp>1000000.0</kp>
+		  <kd>1.0</kd>
+		  <mu1>0.8</mu1>
+		  <mu2>0.8</mu2>
+		  <maxVel>0.0</maxVel>
+		  <minDepth>0.001</minDepth>
+		</gazebo>
+
+	<gazebo reference="mating_link">
+	  <kp>1000000.0</kp>
+	  <kd>1.0</kd>
+	  <mu1>0.8</mu1>
+	  <mu2>0.8</mu2>
+	  <maxVel>0.0</maxVel>
+	  <minDepth>0.001</minDepth>
+	</gazebo>
+
+		<gazebo reference="front_leveling_link">
+		  <kp>1000000.0</kp>
+		  <kd>1.0</kd>
+		  <mu1>0.8</mu1>
+		  <mu2>0.8</mu2>
+		  <maxVel>0.0</maxVel>
+		  <minDepth>0.001</minDepth>
+		</gazebo>
+
+			<gazebo reference="front_motor_rev_link">
+			  <kp>1000000.0</kp>
+			  <kd>1.0</kd>
+			  <mu1>0.8</mu1>
+			  <mu2>0.8</mu2>
+			  <maxVel>0.0</maxVel>
+			  <minDepth>0.001</minDepth>
+			</gazebo>
+
+				<gazebo reference="under_upper_link">
+				  <kp>1000000.0</kp>
+				  <kd>1.0</kd>
+				  <mu1>0.8</mu1>
+				  <mu2>0.8</mu2>
+				  <maxVel>0.0</maxVel>
+				  <minDepth>0.001</minDepth>
+				</gazebo>
+
+					<gazebo reference="upper_motor_rev_link">
+					  <kp>1000000.0</kp>
+					  <kd>1.0</kd>
+					  <mu1>0.8</mu1>
+					  <mu2>0.8</mu2>
+					  <maxVel>0.0</maxVel>
+					  <minDepth>0.001</minDepth>
+					</gazebo>
+
+						<gazebo reference="upper_link">
+						  <kp>1000000.0</kp>
+						  <kd>1.0</kd>
+						  <mu1>0.8</mu1>
+						  <mu2>0.8</mu2>
+						  <maxVel>0.0</maxVel>
+						  <minDepth>0.001</minDepth>
+						</gazebo>
+
+<gazebo reference="rear_Leveling_link">
+  <kp>1000000.0</kp>
+  <kd>1.0</kd>
+  <mu1>0.8</mu1>
+  <mu2>0.8</mu2>
+  <maxVel>0.0</maxVel>
+  <minDepth>0.001</minDepth>
+</gazebo>
+-->
+
+<!--joint-->
+<gazebo reference="front_L_tire_joint">
+<implicitSpringDamper>true</implicitSpringDamper>
+<springStiffness>true</springStiffness>
+</gazebo>
+
+<gazebo reference="front_R_tire_joint">
+<implicitSpringDamper>true</implicitSpringDamper>
+<springStiffness>true</springStiffness>
+</gazebo>
+
+<gazebo reference="rear_L_tire_joint">
+<implicitSpringDamper>true</implicitSpringDamper>
+<springStiffness>true</springStiffness>
+</gazebo>
+
+<gazebo reference="rear_R_tire_joint">
+<implicitSpringDamper>true</implicitSpringDamper>
+<springStiffness>true</springStiffness>
+</gazebo>
+
+</robot>

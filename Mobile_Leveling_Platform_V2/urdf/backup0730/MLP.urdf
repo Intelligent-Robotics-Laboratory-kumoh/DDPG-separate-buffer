@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot name="Mobile_Leveling_Platform_V2" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+<!--Mobile_Robot control
+  <gazebo>
+    <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>10</updateRate>
+      <robotNamespace>/</robotNamespace>
+      <leftFrontJoint>front_L_motor_rev_joint</leftFrontJoint>
+      <rightFrontJoint>front_R_motor_rev_joint</rightFrontJoint>
+      <leftRearJoint>rear_L_motor_rev_joint</leftRearJoint>
+      <rightRearJoint>rear_R_motor_rev_joint</rightRearJoint>
+      <wheelSeparation>0.67</wheelSeparation>
+      <wheelDiameter>0.264453</wheelDiameter>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <torque>100</torque>
+      <commandTopic>twist2gazebo</commandTopic>
+      <broadcastTF>true</broadcastTF>
+    </plugin>
+  </gazebo>-->
+
+<!--Leveling_Platform control
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>platform/MLP</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+  <transmission name="trans1">
+     <type>transmission_interface/SimpleTransmission</type>
+     <joint name="front_motor_rev_joint">
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </joint>
+     <actuator name="front_motor_rev_motor">
+       <mechanicalReduction>50</mechanicalReduction>
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </actuator>
+  </transmission>
+
+  <transmission name="trans2">
+     <type>transmission_interface/SimpleTransmission</type>
+     <joint name="upper_motor_rev_joint">
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </joint>
+     <actuator name="upper_motor_rev_motor">
+       <mechanicalReduction>50</mechanicalReduction>
+       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+     </actuator>
+  </transmission>-->
+
+<!--IMU Plugin-->
+
+  <gazebo reference="imu_link_base">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_base</topicName>
+        <bodyName>imu_link_base</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link_base</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+<!-- GPS -->
+  <gazebo>
+    <plugin name="GazeboRosGps" filename="libhector_gazebo_ros_gps.so">
+        <updateRate>100</updateRate>
+        <robotNamespace>platform/MLP</robotNamespace>
+        <bodyName>GPS_link</bodyName>
+        <frameId>default_empty</frameId>
+        <topicName>fix</topicName>
+	<velocityTopicName>fix_velocity</velocityTopicName>
+	<referenceLatitude>36.146545</referenceLatitude>
+	<referenceLongitude>128.388039</referenceLongitude>
+	<referenceHeading>0</referenceHeading>
+	<referenceAltitude>0</referenceAltitude>
+    	<status>STATIS_FIX</status>
+	<service>SERVICE_GPS	</service>
+	<offset>0 0 0 0 0 0</offset>
+	<drift>0</drift>
+	<driftFrequency>100</driftFrequency>
+	<gaussianNoise>0</gaussianNoise>
+	<velocityOffset>0</velocityOffset>
+	<velocityDrift>0</velocityDrift>
+	<velocityDriftFrequency>100</velocityDriftFrequency>
+	<velocityGaussianNoise>0</velocityGaussianNoise>
+    </plugin>
+  </gazebo>
+
+<!--link color-->
+  <gazebo reference="beacon_link">
+      <material>Gazebo/Green</material> 
+  </gazebo>
+
+  <gazebo reference="GPS_link">
+      <material>Gazebo/Black</material> 
+  </gazebo>
+<!-- base_link mass :15.686-->
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.0001" />
+      <inertia
+        ixx="3.1779"
+        ixy="0"
+        ixz="0"
+        iyy="3.6754"
+        iyz="0"
+        izz="4.4975" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size="0.65 0.998 0.222"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size="0.65 0.998 0.222"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="imu_base_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0.20249"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="imu_link_base" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link name ="imu_link_base">
+    <inertial>
+      <origin
+        xyz="0 0 0.23" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0.23"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0.23"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_L_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="0.363 -0.3709 -0.041791"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_L_tire_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="front_L_tire_link">
+    <inertial>
+      <origin
+        xyz="-3.7896E-07 2.773E-06 2.1792E-08"
+        rpy="0 1.5708 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 1.5708 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_L_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length = "0.0725" radius = "0.1322765"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="front_R_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="-0.363 -0.3709 -0.041791"
+      rpy="3.1416 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_R_tire_link" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="front_R_tire_link">
+    <inertial>
+      <origin
+        xyz="-3.786E-07 2.7731E-06 2.2371E-08"
+        rpy="0 1.5708 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 1.5708 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/front_R_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length = "0.0725" radius = "0.1322765"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_L_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="0.363 0.3731 -0.041791"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_L_tire_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="rear_L_tire_link">
+    <inertial>
+      <origin
+        xyz="-3.7891E-07 2.7734E-06 2.19E-08"
+        rpy="0 1.5708 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 1.5708 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_L_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length = "0.0725" radius = "0.1322765"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_R_motor_rev_joint"
+    type="continuous">
+    <origin
+      xyz="-0.363 0.3731 -0.041791"
+      rpy="3.1416 -1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_R_tire_link" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="rear_R_tire_link">
+    <inertial>
+      <origin
+        xyz="-3.7891E-07 2.7731E-06 2.1853E-08"
+        rpy="0 1.5708 0" />
+      <mass
+        value="2.9551" />
+      <inertia
+        ixx="0.029016"
+        ixy="0"
+        ixz="0"
+        iyy="0.015583"
+        iyz="0"
+        izz="0.015587" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 1.5708 0" />
+      <geometry>
+        <mesh
+          filename="package://Mobile_Leveling_Platform_V2/meshes/rear_R_tire_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length = "0.0725" radius = "0.1322765"/>
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="mating_link">
+    <inertial>
+      <origin
+        xyz="0 0 -0.041642"
+        rpy="0 0 0" />
+      <mass
+        value="15" /> <!--mating_link_ mass:14.754-->
+      <inertia
+        ixx="4.107625"
+        ixy="0"
+        ixz="0"
+        iyy="0.5245"
+        iyz="0"
+        izz="4.607125" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 -0.041642" 
+        rpy="0 0 0" />
+      <geometry>
+	<box size="0.65 1.810 0.1"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.82353 0.82353 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 -0.041642" 
+        rpy="0 0 0" />
+      <geometry>
+	<box size="0.65 1.810 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="mating_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0.20249"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="mating_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+
+
+
+
+</robot>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!--Gazebo Differential Drive Plugin-->
+  <gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <alwaysOn>true</alwaysOn>
+      <legacyMode>false</legacyMode>
+      <updateRate>40</updateRate>
+      <leftJoint>front_L_motor_rev_joint</leftJoint>
+      <rightJoint>front_R_motor_rev_joint</rightJoint>
+      <wheelSeparation>0.035</wheelSeparation>
+      <wheelDiameter>0.07</wheelDiameter>
+      <torque>50</torque>
+      <commandTopic>twist2gazebo</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+  </gazebo>
+
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/robot_description</robotNamespace>
+    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+  </plugin>
+</gazebo>
+
+<transmission name="trans1">
+   <type>transmission_interface/SimpleTransmission</type>
+   <joint name="front_motor_rev_joint">
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </joint>
+   <actuator name="front_motor_rev_motor">
+     <mechanicalReduction>50</mechanicalReduction>
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </actuator>
+</transmission>
+
+<transmission name="trans2">
+   <type>transmission_interface/SimpleTransmission</type>
+   <joint name="upper_motor_rev_joint">
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </joint>
+   <actuator name="upper_motor_rev_motor">
+     <mechanicalReduction>50</mechanicalReduction>
+     <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+   </actuator>
+</transmission>
+
+</robot>

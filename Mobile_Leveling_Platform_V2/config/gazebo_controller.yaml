@@ -1,0 +1,18 @@
+gazebo_ros_control:
+  pid_gains:
+    front_motor_rev_joint:
+      p: 0.5
+      i: 0.5
+      d: 0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+
+    upper_motor_rev_joint:
+      p: 0.5
+      i: 0.5
+      d: 0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    

@@ -1,0 +1,130 @@
+<?xml version='1.0'?>
+<!--sdf version='1.5'-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="ArUco_Marker" params = "marker_joint_name" >
+  <link name ="marker">
+    <inertial>
+      <origin
+        xyz="0 0 0" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.3556 0.3556 0.005"/>
+      </geometry>
+        <material name = "ArucoVisualMarker7/Marker" >
+          <script>
+            <uri materials="$(find Mobile_Leveling_Platform_V2)/aruco_visual_marker_7/materials/textures/aruco_visual_marker_7_marker.material" />
+          </script>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.3556 0.3556 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <link name ="marker_pad">
+    <inertial>
+      <origin
+        xyz="0 0 -1e-5" 
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.000001667"
+        ixy="0"
+        ixz="0"
+        iyy="0.000001667"
+        iyz="0"
+        izz="0.000001667" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+          <box size = "0.3556 0.3556 1e-5"/>
+      </geometry>
+        <material name ="Gazebo/White">
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.01 0.01 0.01 1</specular>
+          <emissive>1 1 1 0</emissive>
+          <shader type='vertex'>
+            <normal_map>__default__</normal_map>
+          </shader>
+        </material>
+        <cast_shadows>1</cast_shadows>
+        <transparency>0</transparency>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+	<box size = "0.3556 0.3556 1e-05"/>
+      </geometry>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+    </collision>
+  </link>
+
+  <joint name="marker_markerpad_joint" type="fixed">
+     <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+     <parent
+        link="marker" />
+     <child
+        link="marker_pad" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+
+  <joint name="marker_markerpad_joint" type="fixed">
+     <origin
+        xyz="0 0 0.015"
+        rpy="0 0 0" />
+     <parent
+        link="upper_link" />
+     <child
+        link="marker" />
+     <axis
+        xyz="0 0 0" />
+  </joint>
+    <static>1</static>
+    <allow_auto_disable>1</allow_auto_disable>
+</xacro:macro>
+</robot>
