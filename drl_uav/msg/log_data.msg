@@ -1,0 +1,13 @@
+int32 landingstate
+int32 episode
+int32 step
+int32 restart
+float32 uav_x
+float32 uav_y
+float32 uav_z
+float32 target_x
+float32 target_y
+float32 target_z
+float32 rel_pose_x
+float32 rel_pose_y
+float32 rel_pose_z

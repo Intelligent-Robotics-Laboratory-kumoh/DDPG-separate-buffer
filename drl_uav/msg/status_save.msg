@@ -1,0 +1,6 @@
+float32[] state
+float32[] action
+float32[] next_state
+float32[] reward
+float32[] done
+bool    start

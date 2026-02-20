@@ -1,0 +1,16 @@
+float32 rel_x
+float32 rel_y
+float32 rel_z
+float32 rel_pose_xdot
+float32 rel_pose_ydot
+float32 yaw
+float32 reward
+int32   episode
+int32   step
+bool    done
+---
+float32 roll
+float32 pitch
+float32 yaw_speed
+float32 thrust
+

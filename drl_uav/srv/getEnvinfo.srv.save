@@ -1,0 +1,22 @@
+float32 rel_x
+float32 rel_y
+float32 rel_z
+float32 rel_pose_xdot
+float32 rel_pose_ydot
+float32 rel_pose_zdot
+float32 yaw_speed
+float32 reward
+int32   episode
+int32   step
+float32 yaw
+bool done
+bool reset_error
+bool mark_recogn
+float32 gazebo_x
+        self.memory.append((state, action, reward, next_state, done))
+        return len(self.memory)---
+float32 uav_vx
+float32 uav_vy
+float32 uav_vz
+float32 uav_yaw_sp
+float32 uav_landcmd
